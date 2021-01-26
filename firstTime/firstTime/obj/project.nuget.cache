@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "igMW0kLWYAcv3OgY+4ovVYuhdLW1AQzgpH2zPVxATRDAOZGCcUml/w6aZutGylOQ3TIPY4oyqYiRILnoccxDTA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Julian\\Desktop\\visualStudioProjects\\firstTime\\firstTime\\firstTime.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Julian\\.nuget\\packages\\fsharp.core\\5.0.0\\fsharp.core.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
