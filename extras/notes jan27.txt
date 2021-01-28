@@ -1,0 +1,17 @@
+// Learn more about F# at http://fsharp.org
+
+open System
+
+// f int -> int
+let f x = x + x
+
+let greet () =
+    printfn "Hello!"
+
+let getRandomNumber upper = Random().Next(1, upper)
+
+[<EntryPoint>]
+let main argv =
+    greet()
+    printfn "Random number is: %d" (getRandomNumber 10)
+    0 // return an integer exit code
