@@ -22,13 +22,13 @@ let getGunpowder () =
 let calculateDistance angle gunpowder =
     printfn ("\nCalculating distance...")
     let rads = (angle * Math.PI) / 180.0
-    let distance = (Math.Pow((gunpowder * 30.0), 2.0) * Math.Sin(2.0 * rads)) / 9.81
+    let distance = (Math.Pow((gunpowder * 30.0), 2.0) * Math.Sin(2.0 * rads)) / (2.0 * 9.81)
     printfn "Distance: %f" distance
     distance
 
 let isHit target distance = 
     if target - distance <= 1.0 && target - distance >= -1.0 then
-        printfn "\nTarget hit!"
+        printfn "\nTarget hit!\n------------------------------------------------------------------------------\n"
         0
     elif distance > target then
         printfn "\nNot hit, long\n------------------------------------------------------------------------------"
@@ -61,20 +61,21 @@ let sumPrimes max =
 
 [<EntryPoint>]
 let main argv =
-    
-    //// program 1
-    //let placeTarget = placeTarget()
-    //let mutable result = 1
+    // program 1
+    printfn "Program 1=\n"
+    let placeTarget = placeTarget()
+    let mutable result = 1
 
-    //while result <> 0 do
-    //    printfn "Target is placed at: %f" placeTarget
-    //    let angle = getAngle()
-    //    let gunpowder = getGunpowder()
-    //    let distance = calculateDistance angle gunpowder
-    //    result <- isHit placeTarget distance
+    while result <> 0 do
+        printfn "Target is placed at: %f\n" placeTarget
+        let angle = getAngle()
+        let gunpowder = getGunpowder()
+        let distance = calculateDistance angle gunpowder
+        result <- isHit placeTarget distance
 
     // program 2
-    printfn "Prime? %b" (isPrime 5)
-    printfn "%d" (sumPrimes 10)
+    printfn "Program 2=\n"
+    printfn "Is 97 a prime number? %b" (isPrime 5)
+    printfn "Sum of prime numbers up to 10: %d" (sumPrimes 10)
 
     0 // return an integer exit code
