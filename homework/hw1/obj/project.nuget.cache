@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "pubpHFKx2dGSbQCr8Etz8Dntz3m7Ugf/tTgQNo5BfD5XCS2J0udUmjv1pjnpxd/mWPQEKi9wSMHTmAbn52MSxw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Julian\\Desktop\\cecs342\\homework\\hw1\\hw1.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Julian\\.nuget\\packages\\fsharp.core\\5.0.0\\fsharp.core.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
