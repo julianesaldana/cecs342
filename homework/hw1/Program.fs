@@ -2,6 +2,7 @@
 
 open System
 
+// program 1
 let placeTarget () =
     let target = Random().NextDouble() * (float 1000)
     target
@@ -36,15 +37,44 @@ let isHit target distance =
         printfn "\nNot hit, short\n------------------------------------------------------------------------------"
         -1
 
+// program 2
+let isPrime num = 
+    let mutable result = true
+    let mutable i = 2
+
+    while i < num && result = true do
+        if num % i = 0 then
+            result <- false
+        else
+            i <- i + 1
+    result
+
+let sumPrimes max =
+    let mutable sum = 0
+    let mutable i = 3
+    while i < max do
+        if isPrime i then
+            sum <- sum + i
+        i <- i + 1
+    sum <- sum + 2
+    sum
+
 [<EntryPoint>]
 let main argv =
-    let placeTarget = placeTarget()
-    let mutable result = 1
+    
+    //// program 1
+    //let placeTarget = placeTarget()
+    //let mutable result = 1
 
-    while result <> 0 do
-        printfn "Target is placed at: %f" placeTarget
-        let angle = getAngle()
-        let gunpowder = getGunpowder()
-        let distance = calculateDistance angle gunpowder
-        result <- isHit 502.533 distance
+    //while result <> 0 do
+    //    printfn "Target is placed at: %f" placeTarget
+    //    let angle = getAngle()
+    //    let gunpowder = getGunpowder()
+    //    let distance = calculateDistance angle gunpowder
+    //    result <- isHit placeTarget distance
+
+    // program 2
+    printfn "Prime? %b" (isPrime 5)
+    printfn "%d" (sumPrimes 10)
+
     0 // return an integer exit code
