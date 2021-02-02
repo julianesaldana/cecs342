@@ -75,7 +75,7 @@ let main argv =
 
     // program 2
     printfn "Program 2=\n"
-    printfn "Is 97 a prime number? %b" (isPrime 5)
-    printfn "Sum of prime numbers up to 10: %d" (sumPrimes 10)
+    printfn "Is 5 a prime number? %b" (isPrime 5)
+    printfn "Sum of prime numbers up to 2 million: %d" (sumPrimes 2000000)
 
     0 // return an integer exit code
