@@ -50,10 +50,8 @@ let isPrime (num : float) =
     result
 
 let sumPrimes (max : float) =
-    printfn "Starting...."
     let mutable sum = 0.0
     let mutable i = 3.0
-    printfn "Processing"
     while i < max do
         if isPrime i then
             sum <- sum + i
@@ -63,17 +61,17 @@ let sumPrimes (max : float) =
 
 [<EntryPoint>]
 let main argv =
-    //// program 1
-    //printfn "Program 1=\n"
-    //let placeTarget = placeTarget()
-    //let mutable result = 1
+    // program 1
+    printfn "Program 1=\n"
+    let placeTarget = placeTarget()
+    let mutable result = 1
 
-    //while result <> 0 do
-    //    printfn "Target is placed at: %f\n" placeTarget
-    //    let angle = getAngle()
-    //    let gunpowder = getGunpowder()
-    //    let distance = calculateDistance angle gunpowder
-    //    result <- isHit placeTarget distance
+    while result <> 0 do
+        printfn "Target is placed at: %f\n" placeTarget
+        let angle = getAngle()
+        let gunpowder = getGunpowder()
+        let distance = calculateDistance angle gunpowder
+        result <- isHit placeTarget distance
 
     // program 2
     printfn "Program 2=\n"
