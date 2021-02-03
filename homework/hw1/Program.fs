@@ -42,6 +42,7 @@ let isPrime (num : float) =
     let mutable result = true
     let mutable i = 2.0
 
+    // while loop follows condition from instructions about squared values
     while i * i <= num && result = true do
         if num % i = 0.0 then
             result <- false
@@ -77,7 +78,7 @@ let main argv =
     printfn "Program 2=\n"
     printfn "Choose a number:"
     let userNum = Console.ReadLine() |> float
-    printfn "\nIs %.2f a prime number? %b" userNum (isPrime 5.0)
+    printfn "\nIs %.2f a prime number? %b" userNum (isPrime userNum)
     printfn "Sum of prime numbers up to %.2f: %.2f" userNum (sumPrimes userNum)
 
     0 // return an integer exit code
