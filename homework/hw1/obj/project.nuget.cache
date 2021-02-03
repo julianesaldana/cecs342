@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "kjnYhVhwoj+ZFJfudOuIWF5rOU0r4R9GofY0nrgeopNSxkbN/2EB01uiJK7WNJCd1aLx24qjsBC8+0oSp0saFQ==",
+  "dgSpecHash": "pubpHFKx2dGSbQCr8Etz8Dntz3m7Ugf/tTgQNo5BfD5XCS2J0udUmjv1pjnpxd/mWPQEKi9wSMHTmAbn52MSxw==",
   "success": true,
-  "projectFilePath": "/Users/juliansaldana/Desktop/cecs342/homework/hw1/hw1.fsproj",
+  "projectFilePath": "C:\\Users\\Julian\\Desktop\\cecs342\\homework\\hw1\\hw1.fsproj",
   "expectedPackageFiles": [
-    "/Users/juliansaldana/.nuget/packages/fsharp.core/5.0.0/fsharp.core.5.0.0.nupkg.sha512"
+    "C:\\Users\\Julian\\.nuget\\packages\\fsharp.core\\5.0.0\\fsharp.core.5.0.0.nupkg.sha512"
   ],
   "logs": []
 }

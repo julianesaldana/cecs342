@@ -32,13 +32,13 @@ let calculateDistance angle gunpowder = // takes angle and gunpowder as paramete
 let isHit target distance = 
     if target - distance <= 1.0 && target - distance >= -1.0 then   // checking if the target and distance are within 1 meter, this takes into account both possible ways that they can be within close range
         printfn "\nTarget hit!\n------------------------------------------------------------------------------\n"
-        0   // decided to return int values because i can use these in main to continue looping
+        false   // while loop will run in main until this returns false (target hit)
     elif distance > target then
         printfn "\nNot hit, long\n------------------------------------------------------------------------------"
-        1
+        true
     else
         printfn "\nNot hit, short\n------------------------------------------------------------------------------"
-        -1
+        true
 
 
 // program 2
@@ -70,14 +70,14 @@ let main argv =
     // program 1
     printfn "Program 1=\n"
     let placeTarget = placeTarget()
-    let mutable result = 1
+    let mutable run = true
 
-    while result <> 0 do    // checks return int from function, if result = 0 (target hit) then it will stop looping
+    while run do    // checks return int from function, if result = 0 (target hit) then it will stop looping
         printfn "Target is placed at: %f\n" placeTarget
         let angle = getAngle()
         let gunpowder = getGunpowder()
         let distance = calculateDistance angle gunpowder
-        result <- isHit placeTarget distance    // return code will be updated
+        run <- isHit placeTarget distance    // return code will be updated
 
     // program 2
     printfn "Program 2=\n"

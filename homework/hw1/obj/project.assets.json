@@ -89,24 +89,26 @@
     ]
   },
   "packageFolders": {
-    "/Users/juliansaldana/.nuget/packages/": {}
+    "C:\\Users\\Julian\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/juliansaldana/Desktop/cecs342/homework/hw1/hw1.fsproj",
+      "projectUniqueName": "C:\\Users\\Julian\\Desktop\\cecs342\\homework\\hw1\\hw1.fsproj",
       "projectName": "hw1",
-      "projectPath": "/Users/juliansaldana/Desktop/cecs342/homework/hw1/hw1.fsproj",
-      "packagesPath": "/Users/juliansaldana/.nuget/packages/",
-      "outputPath": "/Users/juliansaldana/Desktop/cecs342/homework/hw1/obj/",
+      "projectPath": "C:\\Users\\Julian\\Desktop\\cecs342\\homework\\hw1\\hw1.fsproj",
+      "packagesPath": "C:\\Users\\Julian\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Julian\\Desktop\\cecs342\\homework\\hw1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/juliansaldana/.config/NuGet/NuGet.Config"
+        "C:\\Users\\Julian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -141,7 +143,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.102/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }
