@@ -1,5 +1,0 @@
--module(learning).
-
-%% API
--export([]).
-
