@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab3\\lab3\\lab3.fsproj": {}
+    "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab3\\lab3.fsproj": {}
   },
   "projects": {
-    "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab3\\lab3\\lab3.fsproj": {
+    "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab3\\lab3.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab3\\lab3\\lab3.fsproj",
+        "projectUniqueName": "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab3\\lab3.fsproj",
         "projectName": "lab3",
-        "projectPath": "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab3\\lab3\\lab3.fsproj",
+        "projectPath": "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab3\\lab3.fsproj",
         "packagesPath": "C:\\Users\\Julian\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab3\\lab3\\obj\\",
+        "outputPath": "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab3\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Julian\\AppData\\Roaming\\NuGet\\NuGet.Config",

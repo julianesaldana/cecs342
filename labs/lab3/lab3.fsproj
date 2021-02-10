@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Bank.fsi" />
+    <Compile Include="Bank.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
