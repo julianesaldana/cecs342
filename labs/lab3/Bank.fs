@@ -39,10 +39,10 @@ let withdraw amount account =
 let deposit amount account = 
     match account with
     | Empty -> Balance amount
+    | Balance bal -> Balance (bal + amount)
     | Overdrawn over when over < amount -> Balance (amount - over)
     | Overdrawn over when over > amount -> Overdrawn (over - amount)
     | Overdrawn over -> Empty
-    | Balance bal -> Balance (bal + amount)
 
 let makeCustomer name password = 
     {Name = name; Password = password; Account = Empty}
