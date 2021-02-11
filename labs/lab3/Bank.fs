@@ -28,7 +28,7 @@ type TransactionResult =
 
 let makeAccount() = Empty
 
-let withdraw amount account =         
+let withdraw amount account =
     match account with
     | Empty -> Overdrawn amount
     | Overdrawn over -> Overdrawn (abs(over - amount))
@@ -60,4 +60,3 @@ let performTransaction action session =
         match action with
         | Deposit d -> AccountUpdated {Name = customer.Name; Password = customer.Password; Account = deposit d customer.Account}
         | Withdraw w -> AccountUpdated {Name = customer.Name; Password = customer.Password; Account = withdraw w customer.Account}
-
