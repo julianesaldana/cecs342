@@ -15,37 +15,53 @@ type Account =
 //
 // Descriptions below were provided by Mr. Neal Terrell.
 
-// count x coll
+
+
+// count x coll, this one can be generic
 // count the number of values equal to x in coll.
 let rec count x coll =
     match coll with
     | [] -> 0
-    | h :: t -> if h = x then
-                    1
-                else
-                    count x t
+    | head :: tail -> 
+        if head = x then
+            1 + count x tail
+        else
+            count x tail
 
 
 // countEvens coll
-//
 // count the number of even integers in coll.
-let rec countEvens x coll =
+let rec countEvens coll =
     match coll with
     | [] -> 0
-    | h :: t -> if x % 2 = 0 then
-                    1
-                else
-                    countEvens x t
+    | head :: tail -> 
+        if head % 2 = 0 then
+            1 + countEvens tail
+        else
+            countEvens tail
 
-// lastElement coll
-//
+// lastElement coll, this can be generic
 // return the last element in the list
 let rec lastElement coll = 
     match coll with
-    | [] -> null
-    | 
+    | [] -> failwith "Empty list"
+    | [x] -> x
+    | head::tail ->
+        lastElement tail
 
-// maxOverdrawn coll
-//
+
+// maxOverdrawn coll, this is generic type for accounts
 // given a list of Accounts, return the largest Overdrawn amount, or 0 if none
 // are overdrawn
+
+let rec maxOverdrawn coll = 
+    match coll with
+    | [] -> 0
+    | head::tail ->
+        match head with
+        | Overdrawn over ->
+            if over > maxOverdrawn tail then
+                over
+            else
+                maxOverdrawn tail
+        | _ -> maxOverdrawn tail
