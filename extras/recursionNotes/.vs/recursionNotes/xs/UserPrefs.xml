@@ -1,0 +1,25 @@
+﻿<Properties StartupConfiguration="{C19B3E6B-EB4E-4611-9F75-A339861E22F2}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="recursionNotes/Program.fs">
+    <Files>
+      <File FileName="recursionNotes/Program.fs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="recursionNotes" expanded="True">
+            <Node name="recursionNotes" expanded="True">
+              <Node name="Program.fs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.recursionNotes FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
