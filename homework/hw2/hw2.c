@@ -20,9 +20,8 @@ struct CommissionEmployee {
 	double sales_amount;
 };
 
-void Speak_Hourly(Employee emp) {
-	emp = HourlyEmployee emp;
-	printf("%s\n", emp.);
+void Speak_Hourly(Employee.age) {
+	printf();
 }
 
 int GetPay_Hourly() {
