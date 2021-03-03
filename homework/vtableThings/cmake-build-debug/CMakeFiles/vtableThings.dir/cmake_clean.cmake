@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/vtableThings.dir/main.c.o"
-  "vtableThings"
+  "CMakeFiles/vtableThings.dir/main.c.obj"
+  "libvtableThings.dll.a"
+  "vtableThings.exe"
+  "vtableThings.exe.manifest"
   "vtableThings.pdb"
 )
 
