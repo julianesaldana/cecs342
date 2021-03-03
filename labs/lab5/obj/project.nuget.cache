@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "8tbB6EU9lPS5u1nCijpVQlCRt/ydCSZqdEcW7MjkSGGCA4BW/MEHLALiynIw2AYc+PZe2aHgypRPtBxODcjRgw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab5\\lab5.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Julian\\.nuget\\packages\\fsharp.core\\5.0.0\\fsharp.core.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
