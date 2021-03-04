@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "+1nm/52HsT9q/f1UpFNk8w5fNlc1+e1IpPSY4y2wdY3hghgzizaB3GVT8YlCRFiHW1ei0gWOl2GJTCZVUeT/WA==",
+  "dgSpecHash": "OlELnanGNLVCIMHdklAaCSLXmcOy+CF/TNIRmlexRUxpZl4HIzmM08UMhxD96K/Xd+TIZ4hKYEKN2VM4LbsTRg==",
   "success": true,
-  "projectFilePath": "/Users/juliansaldana/Desktop/cecs342/extras/recursionNotes/recursionNotes/recursionNotes.fsproj",
+  "projectFilePath": "C:\\Users\\Julian\\Desktop\\cecs342\\extras\\recursionNotes\\recursionNotes\\recursionNotes.fsproj",
   "expectedPackageFiles": [
-    "/Users/juliansaldana/.nuget/packages/fsharp.core/5.0.0/fsharp.core.5.0.0.nupkg.sha512"
+    "C:\\Users\\Julian\\.nuget\\packages\\fsharp.core\\5.0.0\\fsharp.core.5.0.0.nupkg.sha512"
   ],
   "logs": []
 }

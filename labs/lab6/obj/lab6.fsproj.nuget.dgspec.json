@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Julian\\Desktop\\cecs342\\extras\\recursionNotes\\recursionNotes\\recursionNotes.fsproj": {}
+    "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab6\\lab6.fsproj": {}
   },
   "projects": {
-    "C:\\Users\\Julian\\Desktop\\cecs342\\extras\\recursionNotes\\recursionNotes\\recursionNotes.fsproj": {
+    "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab6\\lab6.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Julian\\Desktop\\cecs342\\extras\\recursionNotes\\recursionNotes\\recursionNotes.fsproj",
-        "projectName": "recursionNotes",
-        "projectPath": "C:\\Users\\Julian\\Desktop\\cecs342\\extras\\recursionNotes\\recursionNotes\\recursionNotes.fsproj",
+        "projectUniqueName": "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab6\\lab6.fsproj",
+        "projectName": "lab6",
+        "projectPath": "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab6\\lab6.fsproj",
         "packagesPath": "C:\\Users\\Julian\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Julian\\Desktop\\cecs342\\extras\\recursionNotes\\recursionNotes\\obj\\",
+        "outputPath": "C:\\Users\\Julian\\Desktop\\cecs342\\labs\\lab6\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Julian\\AppData\\Roaming\\NuGet\\NuGet.Config",
