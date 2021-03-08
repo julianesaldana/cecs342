@@ -5,7 +5,7 @@
 //
 // Your implementation should use:
 // - pattern matching
-// - List.map, List.filter, and / or List.reduce
+// - List.map, List.filter, and / or List.fold
 // - anonymous functions
 //
 // Your implementation should not use:

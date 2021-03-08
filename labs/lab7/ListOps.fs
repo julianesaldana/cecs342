@@ -22,3 +22,5 @@ let deposit amount acc =
     | Overdrawn n when n - amount > 0 -> Overdrawn(n - amount)
     | Overdrawn n when n - amount < 0 -> Balance(abs (n - amount))
     | Overdrawn _ -> Empty
+
+let simplifyBank
