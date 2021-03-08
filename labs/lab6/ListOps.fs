@@ -23,18 +23,47 @@ let makeCustomerWithBalance name (amount: int) =
 let unknownCustomer = makeCustomerWithBalance "Unknown" 0
 
 
-let totalOverdrawn (name: string) (coll: Customer list) =
-    let customers = coll |> List.filter(fun customer -> 
-    match customer.Account with
-        | Overdrawn o -> true
-        | _ -> false ) |>List.filter(fun customer-> customer.Name = name) |> List.map(fun customer -> customer.Account) |> List.sumBy(fun (Overdrawn x) -> x)
-    customers
+//let totalOverdrawn (name: string) (coll: Customer list) =
+//    let customers = coll |> List.filter(fun customer -> 
+//    match customer.Account with
+//        | Overdrawn o -> true
+//        | _ -> false ) |>List.filter(fun customer-> customer.Name = name) |> List.map(fun customer -> customer.Account) |> List.sumBy(fun (Overdrawn x) -> x)
+//    customers
 
-let maxBalance (name: string) (coll: Customer list) = 
-    let customers = coll |> List.filter(fun customer -> 
-    match customer.Account with
-        | Balance o -> true
-        | _ -> false ) |>List.filter(fun customer-> customer.Name = name)
+//let maxBalance (name: string) (coll: Customer list) = 
+//    let customers = coll |> List.filter(fun customer -> 
+//    match customer.Account with
+//        | Balance o -> true
+//        | _ -> false ) |>List.filter(fun customer-> customer.Name = name)
+//    match customers with
+//    | [] -> unknownCustomer
+//    | _ ->  customers |> List.max
+
+
+let totalOverdrawn name customers =
+    let netOverdrawn = 
+        function
+        | {Name = _; Account = Overdrawn n} -> n
+        | _ -> 0
+
     match customers with
+    | [] -> 0
+    | _ ->
+        List.filter (fun e -> e.Name = name) customers
+        |> List.map netOverdrawn
+        |> List.reduce (+)
+
+let maxBalance name customers = 
+    let filterCustomer = 
+        function
+        | { Name = n; Account = Balance _} when n = name -> true
+        | _ -> false
+    
+    let customerReduction acc cust =
+        match (acc.Account, cust.Account) with
+        | Balance bLeft, Balance bRight when bLeft < bRight -> cust
+        | _ -> acc
+
+    match List.filter filterCustomer customers with
     | [] -> unknownCustomer
-    | _ ->  customers |> List.max
+    | customers -> List.reduce customerReduction customers
