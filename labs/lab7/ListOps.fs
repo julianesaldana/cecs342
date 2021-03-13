@@ -23,4 +23,10 @@ let deposit amount acc =
     | Overdrawn n when n - amount < 0 -> Balance(abs (n - amount))
     | Overdrawn _ -> Empty
 
-let simplifyBank
+let join separator listOfStrings =
+    let result = listOfStrings |> List.fold (+) separator
+    result
+    
+let simplifyBank customers names =      // taken from maxBalance function from lab6
+    match customers with
+    | head :: tail 

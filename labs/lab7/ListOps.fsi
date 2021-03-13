@@ -4,9 +4,9 @@
 // in each function.
 //
 // Your implementation should use:
-// - pattern matching
-// - List.map, List.filter, and / or List.fold
-// - anonymous functions
+// - pattern matching   // match |List.empty ->
+// - List.map, List.filter, and / or List.fold  // use list.fold
+// - anonymous functions    // fun x y -> x + y
 //
 // Your implementation should not use:
 // - mutation
