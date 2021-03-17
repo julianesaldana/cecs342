@@ -23,7 +23,7 @@ let deposit amount acc =
     | Overdrawn n when n - amount < 0 -> Balance(abs (n - amount))
     | Overdrawn _ -> Empty
 
-let join separator listOfStrings =
+let join delim coll =
     match coll with
     | [] -> ""
     | head :: tail -> List.fold (fun before after -> before + delim + after) head tail
@@ -34,7 +34,7 @@ let simplifyBank customers names =
         let combineCustomer left right =
             match right.Account with
             | Balance b -> {left with Account = deposit b left.Account}
-            | Overdrawn o -> {left with Account = withdraw b left.Account}
+            | Overdrawn o -> {left with Account = withdraw o left.Account}
             | Empty -> left // will choose original if dupe is empty/0
         
         List.reduce combineCustomer customers
