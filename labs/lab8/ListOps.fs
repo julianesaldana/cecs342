@@ -38,8 +38,11 @@ let simplifyBank customers names =
         List.reduce combineCustomers customers
 
     let simplifyCustomer acc name =
-        (List.filter (fun c -> c.Name = name) customers
-         |> reduceCustomer)
-        :: acc
-
+        let temp = List.filter (fun c -> c.Name = name) customers
+        match temp with
+        | [] -> acc
+        | _ -> (temp 
+               |> reduceCustomer)
+               :: acc
+    
     List.fold simplifyCustomer [] names |> List.rev
