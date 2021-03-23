@@ -67,6 +67,12 @@ let cardToString card =
     // Reminder: a 1 means "Ace", 11 means "Jack", 12 means "Queen", 13 means "King".
     // A "match" statement will be necessary. (The next function below is a hint.)
     let kind = string card.kind
+    match kind with
+    | "1" -> "Ace"
+    | "11" -> "Jack"
+    | "12" -> "Queen"
+    | "13" -> "King"
+    | _ -> kind
 
     // "%A" can print any kind of object, and automatically converts a union (like CardSuit)
     // into a simple string.
@@ -74,7 +80,7 @@ let cardToString card =
 
 
 // Returns a string describing the cards in a hand.    
-let handToString hand =
+let handToString hand = 
     // TODO: replace the following line with statement(s) to build a string describing the given hand.
     // The string consists of the results of cardToString when called on each Card in the hand (a Card list),
     // separated by commas. You need to build this string yourself; the built-in "toString" methods for lists
