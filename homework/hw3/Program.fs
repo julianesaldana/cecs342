@@ -268,14 +268,13 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
     else
         let playerCards = gameState.player.activeHands.Head.cards
         let score = handTotal playerCards
+        let topHand = playerState.activeHands.Head
 
         printfn "%s" (handToString playerCards)
 
         if score > 21 then
             printfn "Player busts!"
-            gameState.player.finishedHands
-            |> List.append gameState.player.activeHands.Head
-            //gameState.player.activeHands |> List.reduce gameState.player.activeHands          
+             
         else
             match playerStrategy gameState with
                | DoubleDown -> 
