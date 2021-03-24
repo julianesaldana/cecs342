@@ -345,15 +345,16 @@ let oneGame playerStrategy gameState =
 
     if handTotal player <= 21 && (handTotal dealer > 21 || handTotal player > handTotal dealer) then
         if gameState.player.activeHands.Head.doubled = true then
-            {playerWins = playerWins + 2; dealerWins = dealerWins; draws = draws}
-        {playerWins = playerWins + 1; dealerWins = dealerWins; draws = draws}
+            {playerWins = 2; dealerWins = 0; draws = 0}
+        else
+            {playerWins = 1; dealerWins = 0; draws = 0}
     elif handTotal player = handTotal dealer && (handTotal player <= 21 && handTotal dealer <= 21) then
-        {playerWins = playerWins; dealerWins = dealerWins; draws = draws + 1}
+        {playerWins = 0; dealerWins = 0; draws = 1}
     else
         if gameState.player.activeHands.Head.doubled = true then
-            {playerWins = playerWins; dealerWins = dealerWins + 2; draws = draws}
+            {playerWins = 0; dealerWins = 2; draws = 0}
         else
-            {playerWins = playerWins; dealerWins = dealerWins + 1; draws = draws}
+            {playerWins = 0; dealerWins = 1; draws = 0}
 
     // TODO: this is a "blank" GameLog. Return something more appropriate for each of the outcomes
     // described above.
