@@ -85,7 +85,11 @@ let handToString hand =
     // The string consists of the results of cardToString when called on each Card in the hand (a Card list),
     // separated by commas. You need to build this string yourself; the built-in "toString" methods for lists
     // insert semicolons and square brackets that I do not want.
+    
+    //hand
+    //|> List.iter (fun item -> sprintf "%A" item)
     sprintf "%A" hand
+
 
     // Hint: transform each card in the hand to its cardToString representation. Then read the documentation
     // on String.concat.
@@ -111,11 +115,17 @@ let cardValue card =
 let handTotal hand =
     // TODO: modify the next line to calculate the sum of the card values of each
     // card in the list. Hint: List.map and List.sum. (Or, if you're slick, List.sumBy)
-    let sum = 0
+    let mutable sum = 0
+    let mutable numAces = 0
+
+    for i in hand.cards do
+        sum += cardValue i
+        if cardValue = 11 then
+            numAces += 1
 
     // TODO: modify the next line to count the number of aces in the hand.
     // Hint: List.filter and List.length. 
-    let numAces = 0
+
 
     // Adjust the sum if it exceeds 21 and there are aces.
     if sum <= 21 then
@@ -187,6 +197,7 @@ let hit handOwner gameState =
         {gameState with deck = newDeck;
                         dealer = newDealerHand}
     else
+        
         // TODO: updating the player is trickier. We are always working with the player's first
         // active hand. Create a new first hand by adding the top card to that hand's card list.
         // Then update the player's active hands so that the new first hand is head of the list; and the
