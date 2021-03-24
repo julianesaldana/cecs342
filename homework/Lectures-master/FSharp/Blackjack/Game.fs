@@ -7,7 +7,10 @@ type CardSuit =
     | Hearts
 
 // Kinds: 1 = Ace, 2 = Two, ..., 11 = Jack, 12 = Queen, 13 = King.
-type Card = {suit : CardSuit; kind : int}
+type Card = {
+    suit : CardSuit;
+    kind : int
+}
 
 
 /// Game state records.
@@ -86,8 +89,10 @@ let handToString hand =
     // separated by commas. You need to build this string yourself; the built-in "toString" methods for lists
     // insert semicolons and square brackets that I do not want.
     
-    //hand
-    //|> List.iter (fun item -> sprintf "%A" item)
+    hand |> List.map (fun x -> cardToString(x)) |> List.fold (fun elem acc ->
+                                                              match elem with
+                                                              | "" -> acc
+                                                              | _ -> acc + ", " + elem) ""
     sprintf "%A" hand
 
 
@@ -115,17 +120,15 @@ let cardValue card =
 let handTotal hand =
     // TODO: modify the next line to calculate the sum of the card values of each
     // card in the list. Hint: List.map and List.sum. (Or, if you're slick, List.sumBy)
-    let mutable sum = 0
-    let mutable numAces = 0
-
-    for i in hand.cards do
-        sum += cardValue i
-        if cardValue = 11 then
-            numAces += 1
+    let sum = 0
+    
+    let sum = hand |> List.sum (fun c -> c.kind) |> List.length
 
     // TODO: modify the next line to count the number of aces in the hand.
     // Hint: List.filter and List.length. 
+    let numAces = 0
 
+    let numAces = hand |> List.filter (fun c -> c.kind = 1) |> List.length
 
     // Adjust the sum if it exceeds 21 and there are aces.
     if sum <= 21 then
@@ -197,7 +200,12 @@ let hit handOwner gameState =
         {gameState with deck = newDeck;
                         dealer = newDealerHand}
     else
-        
+        let newPlayerHand = topCard :: gameState.player.activeHands.Head
+        gameState.player.activeHands.Head = newPlayerHand
+        {gameState with deck = newDeck;
+                        player = newPlayerHand;}
+            
+
         // TODO: updating the player is trickier. We are always working with the player's first
         // active hand. Create a new first hand by adding the top card to that hand's card list.
         // Then update the player's active hands so that the new first hand is head of the list; and the
@@ -236,7 +244,7 @@ let rec dealerTurn gameState =
         gameState
         
 
-// Take the player's turn by repeatedly taking a single action until they bust or stay.
+// Take the player's turn by repeatedly taking a single action until they bust or stand.
 let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameState) =
     // TODO: code this method using dealerTurn as a guide. Follow the same standard
     // of printing output. This function must return the new game state after the player's
@@ -254,13 +262,34 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
         // A player with no active hands cannot take an action.
         gameState
     else
+        let player = gameState.player.activeHands.Head.cards
+        let score = handTotal player
+
+        printfn "%s" player
+
+        if score > 21 then
+            printfn "Player busts!"
+            gameState
+        else
+            //gameState
+            //|> playerStrategy gameState (fun pa -> match pa with
+            //                                            | DoubleDown -> hit Player gameState |> gameState
+            //                                            | _ -> playerTurn playerStrategy gameState)
+            match playerStrategy gameState with
+               | DoubleDown -> 
+                   hit Player gameState
+               | _ -> playerTurn playerStrategy gameState
+
+
+
         // The next line is just so the code compiles. Remove it when you code the function.
         // TODO: print the player's first active hand. Call the strategy to get a PlayerAction.
         // Create a new game state based on that action. Recurse if the player can take another action 
         // after their chosen one, or return the game state if they cannot.
         
+
         // Remove this when you're ready; it's just so the code compiles.
-        gameState
+        //gameState
                         
 
 
@@ -268,14 +297,29 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
 let oneGame playerStrategy gameState =
     // TODO: print the first card in the dealer's hand to the screen, because the Player can see
     // one card from the dealer's hand in order to make their decisions.
-    printfn "Dealer is showing: %A" 0 // fix this line
+    let dealer = gameState.dealer
+    let player = gameState.player.activeHands.Head.cards
 
-    printfn "Player's turn"
+    printfn "Dealer is showing: %s" cardToString dealer.Head
+
+    if handTotal dealer = 21 && handTotal handTotal player <> 21 then
+        printfn "Natural Blackjack, dealer wins!"
+        {playerWins = 0; dealerWins = dealerWins + 1; draws = 0}
+    elif handTotal player = 21 && handTotal dealer <> 21 then
+        printfn "Natural Blackjack, player wins!"
+        {playerWins = playerWins + 1; dealerWins = 0; draws = 0}
+    elif handTotal dealer = 21 && handTotal player = 21 then
+        printfn "Natural Blackjack, draw!"
+        {playerWins = 0; dealerWins = 0; draws = draws + 1}
+
     // TODO: play the game! First the player gets their turn. The dealer then takes their turn,
     // using the state of the game after the player's turn finished.
+    printfn "Player's turn"
+    playerTurn playerStrategy gameState
 
     printfn "\nDealer's turn"
-    
+    dealerTurn gameState
+
     // TODO: determine the winner(s)! For each of the player's hands, determine if that hand is a 
     // win, loss, or draw. Accumulate (!!) the sum total of wins, losses, and draws, accounting for doubled-down
     // hands, which gets 2 wins, 2 losses, or 1 draw
@@ -284,6 +328,8 @@ let oneGame playerStrategy gameState =
     // - the dealer busts; or
     // - player's score > dealer's score
     // If neither side busts and they have the same score, the result is a draw.
+
+    
 
     // TODO: this is a "blank" GameLog. Return something more appropriate for each of the outcomes
     // described above.
@@ -295,6 +341,8 @@ let manyGames n playerStrategy =
     // TODO: run oneGame with the playerStrategy n times, and accumulate the result. 
     // If you're slick, you won't do any recursion yourself. Instead read about List.init, 
     // and then consider List.reduce.
+
+    let rec 
 
     // TODO: this is a "blank" GameLog. Return something more appropriate.
     {playerWins = 0; dealerWins = 0; draws = 0}
@@ -345,7 +393,69 @@ let rec interactivePlayerStrategy gameState =
     | _ -> printfn "Please choose one of the available options, dummy."
            interactivePlayerStrategy gameState
 
+let inactivePlayerStrategy gameState =
+    let legalActions = legalPlayerActions playerHand.cards
+    Stand
+
+let greedyPlayerStrategy gameState = 
+    let playerHand = gameState.player.activeHands.Head.cards
+    let legalActions = legalPlayerActions playerHand
+    if handTotal playerHand < 21 then
+        Hit
+    else
+        Stand
     
+
+let coinFlipPlayerStragety gameState=
+    let playerHand = gameState.player.activeHands.Head.cards
+    if rand.Next(1) = 0 then
+        Hit
+    else
+        Stand
+
+let basicPlayerStrategy gameState = 
+    let playerHand = gameState.player.activeHands.Head.cards
+    let dealerFirstCard = gameState.dealer.Head
+
+    if handTotal playerHand = 11 then
+        DoubleDown
+    elif playerHand.Head.kind = 5 && playerHand.Tail.Head.kind = 5 then
+        DoubleDown
+    elif handTotal playerHand = 10 then
+        if cardValue dealerFirstCard = 10 || cardValue dealerFirstCard = 11 then
+            Hit
+        else
+            DoubleDown
+    elif handTotal playerHand = 9 then
+        if cardValue dealerFirstCard = 2 || cardValue dealerFirstCard > 7 then
+            Hit
+        else
+            DoubleDown
+    elif cardValue playerHand.Head = cardValue playerHand.Tail.Head then
+        if handTotal playerHand = 20 then
+            Stand
+        else
+            Split
+    else
+        if cardValue dealerFirstCard >= 2 && cardValue dealerFirstCard <= 6 then
+            if handTotal playerHand > 12 then
+                Stand
+            else
+                Hit
+        elif cardValue dealerFirstCard >= 7 && cardValue dealerFirstCard <= 10 then
+            if handTotal playerHand < 16 then 
+                Hit
+            else
+                Stand
+        elif cardValue dealerFirstCard = 11 then
+            if handTotal playerHand < 16 then   //create match statement to check if there is at least one ace
+                Hit
+            elif handTotal <= 11 then
+                Hit
+            else
+                Stand
+
+
 open MyBlackjack
 
 [<EntryPoint>]
