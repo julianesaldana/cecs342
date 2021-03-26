@@ -260,6 +260,19 @@ let activeToInactive gameState =
     let newPlayerState = {activeHands = newActive; finishedHands = toInactive :: gameState.player.finishedHands}
     {gameState with player = newPlayerState}
 
+let setDoubled (gameState : GameState) =
+    let newPlayerHand = {cards = gameState.player.activeHands.Head.cards; doubled = true}
+    let newPlayerState = {activeHands = newPlayerHand :: gameState.player.activeHands.Tail; finishedHands = gameState.player.finishedHands}
+    {gameState with player = newPlayerState}
+
+
+//let split gameState =
+//    let topCard = List.head gameState.deck
+//    let newDeck = List.tail gameState.deck
+//    let tempGameState = hit Player gameState
+//    let newActiveHands = {cards = [topCard] ; doubled = false }::tempGameState.player.activeHands
+//    let newPlayerState = {activeHands = newActiveHands ; finishedHands = tempGameState.player.finishedHands}
+//    hit Player {player = newPlayerState; deck =  newDeck ; dealer = tempGameState.dealer}
 
 // Take the player's turn by repeatedly taking a single action until they bust or stand.
 let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameState) =
@@ -287,8 +300,9 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
 
         if score > 21 then  // handles busts
             printfn "Player busts!"
-            gameState
+            gameState 
             |> activeToInactive // newly created function, located above playerTurn
+            |> playerTurn playerStrategy
         else
             match playerStrategy gameState with
                 | Hit ->
@@ -296,21 +310,51 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
                     |> hit Player
                     |> playerTurn playerStrategy
                 | Stand ->
-                    printfn "Final points: %d" (handTotal playerState.activeHands.Head.cards)
-                    gameState
+                    printfn "Points: %d" (handTotal playerState.activeHands.Head.cards)
+
+                    gameState 
+                    |> activeToInactive 
+                    |> playerTurn playerStrategy
+
                 | DoubleDown ->
                     let result = 
                         gameState
                         |> hit Player
+                        |> setDoubled
+
                     printfn "Doubling down, Player's hand: %s; %d points" (handToString result.player.activeHands.Head.cards) (handTotal result.player.activeHands.Head.cards)
+                    
                     result
-                | Split ->
-                    let secondCard = playerState.activeHands.Head.cards.Tail
-                    let newPlayerHand = {cards = secondCard; doubled = false}
-                    let updatedActiveHands = newPlayerHand :: playerState.activeHands
-                    let updatedPlayerState = {activeHands = updatedActiveHands; finishedHands = playerState.finishedHands}
-                    {gameState with player = updatedPlayerState}
+                    |> activeToInactive
                     |> playerTurn playerStrategy
+                | Split ->
+                    // doesnt add another card to split
+                    //let secondCard = playerState.activeHands.Head.cards.Tail
+                    //let newPlayerHand = {cards = secondCard; doubled = false}
+                    //let updatedActiveHands = newPlayerHand :: playerState.activeHands
+                    //let updatedPlayerState = {activeHands = updatedActiveHands; finishedHands = playerState.finishedHands}
+                    //{gameState with player = updatedPlayerState}
+                    //|> playerTurn playerStrategy
+
+                    //printfn "player splits"
+                    //split gameState |> playerTurn playerStrategy
+
+                    printfn "Splitting.."
+                    let firstSplitHand = {cards = [gameState.player.activeHands.Head.cards.Head]; doubled = false}
+                    let secondSplitHand = {cards = [gameState.player.activeHands.Head.cards.Tail.Head]; doubled = false}
+
+                    let firstSplitGameState = {deck = gameState.deck; player = {activeHands = [firstSplitHand]; finishedHands = gameState.player.finishedHands}; dealer = gameState.dealer}
+                    let firstSplitGameStateUpdated = firstSplitGameState |> hit Player
+                    
+                    let secondSplitGameState = {deck = firstSplitGameStateUpdated.deck; player = {activeHands = [secondSplitHand]; finishedHands = firstSplitGameStateUpdated.player.finishedHands}; dealer = firstSplitGameStateUpdated.dealer}
+                    let secondSplitGameStateUpdated = secondSplitGameState |> hit Player    // only care about activeHands, deck
+
+                    let trailing = secondSplitGameStateUpdated.player.activeHands.Head :: gameState.player.activeHands.Tail
+
+                    {deck = secondSplitGameStateUpdated.deck; player = {activeHands = firstSplitGameStateUpdated.player.activeHands.Head :: trailing; finishedHands = secondSplitGameStateUpdated.player.finishedHands}; dealer = secondSplitGameStateUpdated.dealer}
+                    |> playerTurn playerStrategy
+
+               
 
         // The next line is just so the code compiles. Remove it when you code the function.
         // TODO: print the player's first active hand. Call the strategy to get a PlayerAction.
@@ -327,60 +371,48 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
 let oneGame playerStrategy gameState =
     // TODO: print the first card in the dealer's hand to the screen, because the Player can see
     // one card from the dealer's hand in order to make their decisions.
-    let dealer = gameState.dealer
-    let player = gameState.player.activeHands.Head.cards
 
-    printfn "Dealer is showing: %s" (cardToString dealer.Head)
+    let dealerFirstCard = gameState.dealer.Head
+    printfn "Dealer is showing: %s" (cardToString dealerFirstCard)
 
-    // handling natural blackjacks
-    if (handTotal dealer = 21) && (handTotal player <> 21) then
-        printfn "Natural Blackjack, dealer wins!"
-        {playerWins = 0; dealerWins = 1; draws = 0}
-    elif handTotal player = 21 && handTotal dealer <> 21 then
-        printfn "Natural Blackjack, player wins!"
-        {playerWins = 1; dealerWins = 0; draws = 0}
-    elif handTotal dealer = 21 && handTotal player = 21 then
-        printfn "Natural Blackjack, draw!"
+    // TODO: play the game! First the player gets their turn. The dealer then takes their turn,
+    // using the state of the game after the player's turn finished.
+    printfn "Player's turn"
+    let updatedState = playerTurn playerStrategy gameState
+    let player = updatedState.player.finishedHands.Head.cards
+
+    printfn "\nDealer's turn"
+    let updatedState1 = dealerTurn updatedState
+    let dealer = updatedState1.dealer
+
+    // TODO: determine the winner(s)! For each of the player's hands, determine if that hand is a 
+    // win, loss, or draw. Accumulate (!!) the sum total of wins, losses, and draws, accounting for doubled-down
+    // hands, which gets 2 wins, 2 losses, or 1 draw
+    
+    // The player wins a hand if they did not bust (score <= 21) AND EITHER:
+    // - the dealer busts; or
+    // - player's score > dealer's score
+    // If neither side busts and they have the same score, the result is a draw.
+
+    if (handTotal player <= 21 && handTotal dealer > 21) || (handTotal player <= 21 && handTotal player > handTotal dealer) then
+        printfn "Player wins!"
+        if updatedState1.player.finishedHands.Head.doubled = true then
+            {playerWins = 2; dealerWins = 0; draws = 0}
+        else
+            {playerWins = 1; dealerWins = 0; draws = 0}
+    elif (handTotal player = handTotal dealer) && (handTotal player <= 21 && handTotal dealer <= 21) || (handTotal player > 21 && handTotal dealer > 21) then
+        printfn "Draw!"
         {playerWins = 0; dealerWins = 0; draws = 1}
     else
-        // TODO: play the game! First the player gets their turn. The dealer then takes their turn,
-        // using the state of the game after the player's turn finished.
-        printfn "Player's turn"
-        let updatedPlayerState = playerTurn playerStrategy gameState
-        let player = updatedPlayerState.player.activeHands.Head.cards
-
-        printfn "\nDealer's turn"
-        let updatedDealerState = dealerTurn gameState
-        let dealer = gameState.dealer
-
-        // TODO: determine the winner(s)! For each of the player's hands, determine if that hand is a 
-        // win, loss, or draw. Accumulate (!!) the sum total of wins, losses, and draws, accounting for doubled-down
-        // hands, which gets 2 wins, 2 losses, or 1 draw
-    
-        // The player wins a hand if they did not bust (score <= 21) AND EITHER:
-        // - the dealer busts; or
-        // - player's score > dealer's score
-        // If neither side busts and they have the same score, the result is a draw.
-
-        if handTotal player <= 21 && (handTotal dealer > 21 || handTotal player > handTotal dealer) then
-            printfn "Player wins!"
-            if updatedPlayerState.player.activeHands.Head.doubled = true then
-                {playerWins = 2; dealerWins = 0; draws = 0}
-            else
-                {playerWins = 1; dealerWins = 0; draws = 0}
-        elif handTotal player = handTotal dealer && (handTotal player <= 21 && handTotal dealer <= 21) then
-            printfn "Draw!"
-            {playerWins = 0; dealerWins = 0; draws = 1}
+        printfn "Dealer wins!"
+        if updatedState1.player.finishedHands.Head.doubled = true then
+            {playerWins = 0; dealerWins = 2; draws = 0}
         else
-            printfn "Dealer wins!"
-            if updatedPlayerState.player.activeHands.Head.doubled = true then
-                {playerWins = 0; dealerWins = 2; draws = 0}
-            else
-                {playerWins = 0; dealerWins = 1; draws = 0}
+            {playerWins = 0; dealerWins = 1; draws = 0}
 
-        // TODO: this is a "blank" GameLog. Return something more appropriate for each of the outcomes
-        // described above.
-        // {playerWins = 0; dealerWins = 0; draws = 0}
+    // TODO: this is a "blank" GameLog. Return something more appropriate for each of the outcomes
+    // described above.
+    // {playerWins = 0; dealerWins = 0; draws = 0}
 
 
 // Plays n games using the given playerStrategy, and returns the combined game log.
