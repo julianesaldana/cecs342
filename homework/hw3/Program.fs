@@ -266,13 +266,6 @@ let setDoubled (gameState : GameState) =
     {gameState with player = newPlayerState}
 
 
-//let split gameState =
-//    let topCard = List.head gameState.deck
-//    let newDeck = List.tail gameState.deck
-//    let tempGameState = hit Player gameState
-//    let newActiveHands = {cards = [topCard] ; doubled = false }::tempGameState.player.activeHands
-//    let newPlayerState = {activeHands = newActiveHands ; finishedHands = tempGameState.player.finishedHands}
-//    hit Player {player = newPlayerState; deck =  newDeck ; dealer = tempGameState.dealer}
 
 // Take the player's turn by repeatedly taking a single action until they bust or stand.
 let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameState) =
@@ -328,17 +321,6 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
                     |> activeToInactive
                     |> playerTurn playerStrategy
                 | Split ->
-                    // doesnt add another card to split
-                    //let secondCard = playerState.activeHands.Head.cards.Tail
-                    //let newPlayerHand = {cards = secondCard; doubled = false}
-                    //let updatedActiveHands = newPlayerHand :: playerState.activeHands
-                    //let updatedPlayerState = {activeHands = updatedActiveHands; finishedHands = playerState.finishedHands}
-                    //{gameState with player = updatedPlayerState}
-                    //|> playerTurn playerStrategy
-
-                    //printfn "player splits"
-                    //split gameState |> playerTurn playerStrategy
-
                     printfn "Splitting.."
                     let firstSplitHand = {cards = [gameState.player.activeHands.Head.cards.Head]; doubled = false}
                     let secondSplitHand = {cards = [gameState.player.activeHands.Head.cards.Tail.Head]; doubled = false}
@@ -394,25 +376,31 @@ let oneGame playerStrategy gameState =
     // - player's score > dealer's score
     // If neither side busts and they have the same score, the result is a draw.
 
-    if (handTotal player <= 21 && handTotal dealer > 21) || (handTotal player <= 21 && handTotal player > handTotal dealer) then
-        printfn "Player wins!"
-        if updatedState1.player.finishedHands.Head.doubled = true then
-            {playerWins = 2; dealerWins = 0; draws = 0}
+        
+    let results = []        
+    let final = 
+        if (handTotal player <= 21 && handTotal dealer > 21) || (handTotal player <= 21 && handTotal player > handTotal dealer) then
+            printfn "Player wins!"
+            if updatedState1.player.finishedHands.Head.doubled = true then
+                results |> List.append [Win] |> List.append [Win]
+            else
+                results |> List.append [Win]
+        elif (handTotal player = handTotal dealer) && (handTotal player <= 21 && handTotal dealer <= 21) || (handTotal player > 21 && handTotal dealer > 21) then
+            printfn "Draw!"
+            results |> List.append [Draw]
         else
-            {playerWins = 1; dealerWins = 0; draws = 0}
-    elif (handTotal player = handTotal dealer) && (handTotal player <= 21 && handTotal dealer <= 21) || (handTotal player > 21 && handTotal dealer > 21) then
-        printfn "Draw!"
-        {playerWins = 0; dealerWins = 0; draws = 1}
-    else
-        printfn "Dealer wins!"
-        if updatedState1.player.finishedHands.Head.doubled = true then
-            {playerWins = 0; dealerWins = 2; draws = 0}
-        else
-            {playerWins = 0; dealerWins = 1; draws = 0}
+            printfn "Dealer wins!"
+            if updatedState1.player.finishedHands.Head.doubled = true then
+                results |> List.append [Lose] |> List.append [Lose]
+            else
+                results |> List.append [Lose]
 
+    let wins = final |> List.filter (fun r -> r = Win) |> List.length
+    let losses = final |> List.filter (fun r -> r = Lose) |> List.length
+    let draws = final |> List.filter (fun r -> r = Draw) |> List.length
     // TODO: this is a "blank" GameLog. Return something more appropriate for each of the outcomes
     // described above.
-    // {playerWins = 0; dealerWins = 0; draws = 0}
+    {playerWins = wins; dealerWins = losses; draws = draws}
 
 
 // Plays n games using the given playerStrategy, and returns the combined game log.
@@ -492,6 +480,8 @@ let coinFlipPlayerStrategy gameState=
 let basicPlayerStrategy gameState = 
     let playerHand = gameState.player.activeHands.Head.cards
     let dealerFirstCard = gameState.dealer.Head
+    
+    let numOfAces = playerHand |> List.filter (fun n -> n.kind = 1) |> List.length
 
     if handTotal playerHand = 11 then
         DoubleDown
@@ -524,7 +514,7 @@ let basicPlayerStrategy gameState =
             else
                 Stand
         elif cardValue dealerFirstCard = 11 then
-            if handTotal playerHand < 16 then   //create match statement to check if there is at least one ace
+            if handTotal playerHand <= 16 && numOfAces >= 1 then
                 Hit
             elif handTotal playerHand <= 11 then
                 Hit
@@ -538,15 +528,45 @@ let basicPlayerStrategy gameState =
 
 [<EntryPoint>]
 let main argv =
-    makeDeck() 
-    |> shuffleDeck
-    |> newGame
-    |> oneGame interactivePlayerStrategy
-    |> printfn "%A"
-
-    //manyGames 1000 coinFlipPlayerStrategy
+    //makeDeck() 
+    //|> shuffleDeck
+    //|> newGame
+    //|> oneGame interactivePlayerStrategy
     //|> printfn "%A"
+
+    manyGames 1000 basicPlayerStrategy
+    |> printfn "%A"
     //TODO: call manyGames to run 1000 games with a particular strategy.
+
+
+    //// This is the test from the PDF for doubling down.
+    //let testFromPDF() =
+    //    let deck = [{suit = Hearts; kind = 5}; {suit = Clubs; kind = 13};
+    //                {suit = Spades; kind = 5}; {suit = Clubs; kind = 13};
+    //                {suit = Clubs; kind = 1}]
+    //    let result = deck |> newGame |> oneGame basicPlayerStrategy
+    //    let expected = {dealerWins = 0; playerWins = 2; draws = 0}
+    //    assert (result = expected)
+
+
+    //// This is a test for splitting with two 9's. The strategy should Stand on both hands after the split. One hand wins, one draws.
+    //let splitTest() =
+    //    let deck = [{suit = Hearts; kind = 9}; {suit = Clubs; kind = 13};
+    //                {suit = Spades; kind = 9}; {suit = Diamonds; kind = 7};
+    //                {suit = Clubs; kind = 1}; {suit = Clubs; kind = 8}]
+    //    let result = deck |> newGame |> oneGame basicPlayerStrategy
+    //    let expected = {dealerWins = 0; playerWins = 1; draws = 1}
+    //    assert (result = expected)
+
+    
+    //// This test splits two 8's. One hand gets a 2 and doubles down but loses. The other hand gets an Ace, Stands, and wins.
+    //let splitIntoDouble() =
+    //    let deck = [{suit = Hearts; kind = 8}; {suit = Clubs; kind = 7};
+    //                {suit = Spades; kind = 8}; {suit = Diamonds; kind = 13};
+    //                {suit = Clubs; kind = 2}; {suit = Clubs; kind = 1}; {suit = Diamonds; kind = 2}]
+    //    let result = deck |> newGame |> oneGame basicPlayerStrategy
+    //    let expected = {dealerWins = 2; playerWins = 1; draws = 0}
+    //    assert (result = expected)
 
     0 // return an integer exit code
 
