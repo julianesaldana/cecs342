@@ -1,4 +1,4 @@
-﻿/// Card representations.
+/// Card representations.
 // An "enum"-type union for card suit.
 type CardSuit = 
     | Spades 
@@ -349,58 +349,46 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
                         
 
 
-// Plays one game with the given player strategy. Returns a GameLog recording the winner of the game.
 let oneGame playerStrategy gameState =
     // TODO: print the first card in the dealer's hand to the screen, because the Player can see
     // one card from the dealer's hand in order to make their decisions.
-
-    let dealerFirstCard = gameState.dealer.Head
-    printfn "Dealer is showing: %s" (cardToString dealerFirstCard)
+    
+    printfn "Dealer is showing: %s" (cardToString gameState.dealer.Head)
 
     // TODO: play the game! First the player gets their turn. The dealer then takes their turn,
     // using the state of the game after the player's turn finished.
     printfn "Player's turn"
-    let updatedState = playerTurn playerStrategy gameState
-    let player = updatedState.player.finishedHands.Head.cards
+    let state = playerTurn playerStrategy gameState
 
     printfn "\nDealer's turn"
-    let updatedState1 = dealerTurn updatedState
-    let dealer = updatedState1.dealer
+    let nextState = dealerTurn state
 
-    // TODO: determine the winner(s)! For each of the player's hands, determine if that hand is a 
-    // win, loss, or draw. Accumulate (!!) the sum total of wins, losses, and draws, accounting for doubled-down
-    // hands, which gets 2 wins, 2 losses, or 1 draw
-    
-    // The player wins a hand if they did not bust (score <= 21) AND EITHER:
-    // - the dealer busts; or
-    // - player's score > dealer's score
-    // If neither side busts and they have the same score, the result is a draw.
+    let dealerScore = handTotal nextState.dealer
 
-        
-    let results = []        
-    let final = 
-        if (handTotal player <= 21 && handTotal dealer > 21) || (handTotal player <= 21 && handTotal player > handTotal dealer) then
-            printfn "Player wins!"
-            if updatedState1.player.finishedHands.Head.doubled = true then
-                results |> List.append [Win] |> List.append [Win]
-            else
-                results |> List.append [Win]
-        elif (handTotal player = handTotal dealer) && (handTotal player <= 21 && handTotal dealer <= 21) || (handTotal player > 21 && handTotal dealer > 21) then
-            printfn "Draw!"
-            results |> List.append [Draw]
-        else
-            printfn "Dealer wins!"
-            if updatedState1.player.finishedHands.Head.doubled = true then
-                results |> List.append [Lose] |> List.append [Lose]
-            else
-                results |> List.append [Lose]
-
-    let wins = final |> List.filter (fun r -> r = Win) |> List.length
-    let losses = final |> List.filter (fun r -> r = Lose) |> List.length
-    let draws = final |> List.filter (fun r -> r = Draw) |> List.length
-    // TODO: this is a "blank" GameLog. Return something more appropriate for each of the outcomes
-    // described above.
-    {playerWins = wins; dealerWins = losses; draws = draws}
+    if dealerScore > 21 then
+        let busts =
+            nextState.player.finishedHands
+            |> List.filter (fun x -> 21 < handTotal x.cards)
+            |> List.map (fun x -> if x.doubled then 2 else 1)
+            |> List.sum
+        let wins =
+            nextState.player.finishedHands
+            |> List.map (fun x -> if x.doubled then 2 else 1)
+            |> List.sum
+        {playerWins = wins - busts; dealerWins = busts; draws = 0}
+    else
+       let wins =
+            nextState.player.finishedHands
+            |> List.filter (fun x -> handTotal x.cards > dealerScore && handTotal x.cards <= 21)
+            |> List.map (fun x -> if x.doubled then 2 else 1)
+            |> List.sum
+       let busts =
+            nextState.player.finishedHands
+            |> List.filter (fun x -> handTotal x.cards < dealerScore || handTotal x.cards > 21)
+            |> List.map (fun x -> if x.doubled then 2 else 1)
+            |> List.sum
+       let playerDraws = (nextState.player.activeHands |> List.filter (fun x -> handTotal x.cards = dealerScore) |> List.length) + (nextState.player.finishedHands |> List.filter (fun x -> handTotal x.cards = dealerScore) |> List.length)
+       {playerWins = wins; dealerWins = busts; draws = playerDraws}
 
 
 // Plays n games using the given playerStrategy, and returns the combined game log.
@@ -534,39 +522,23 @@ let main argv =
     //|> oneGame interactivePlayerStrategy
     //|> printfn "%A"
 
-    manyGames 1000 basicPlayerStrategy
+    //manyGames 1000 basicPlayerStrategy
+    //|> printfn "%A"
+    //printfn "1000 games of basicPlayerStrategy"
+
+
+    //manyGames 1000 inactivePlayerStrategy
+    //|> printfn "%A"
+    //printfn "1000 games of inactivePlayerStrategy"
+
+    //manyGames 1000 greedyPlayerStrategy
+    //|> printfn "%A"
+    //printfn "1000 games of greedyPlayerStrategy"
+
+
+    manyGames 1000 coinFlipPlayerStrategy
     |> printfn "%A"
-    //TODO: call manyGames to run 1000 games with a particular strategy.
-
-
-    //// This is the test from the PDF for doubling down.
-    //let testFromPDF() =
-    //    let deck = [{suit = Hearts; kind = 5}; {suit = Clubs; kind = 13};
-    //                {suit = Spades; kind = 5}; {suit = Clubs; kind = 13};
-    //                {suit = Clubs; kind = 1}]
-    //    let result = deck |> newGame |> oneGame basicPlayerStrategy
-    //    let expected = {dealerWins = 0; playerWins = 2; draws = 0}
-    //    assert (result = expected)
-
-
-    //// This is a test for splitting with two 9's. The strategy should Stand on both hands after the split. One hand wins, one draws.
-    //let splitTest() =
-    //    let deck = [{suit = Hearts; kind = 9}; {suit = Clubs; kind = 13};
-    //                {suit = Spades; kind = 9}; {suit = Diamonds; kind = 7};
-    //                {suit = Clubs; kind = 1}; {suit = Clubs; kind = 8}]
-    //    let result = deck |> newGame |> oneGame basicPlayerStrategy
-    //    let expected = {dealerWins = 0; playerWins = 1; draws = 1}
-    //    assert (result = expected)
-
-    
-    //// This test splits two 8's. One hand gets a 2 and doubles down but loses. The other hand gets an Ace, Stands, and wins.
-    //let splitIntoDouble() =
-    //    let deck = [{suit = Hearts; kind = 8}; {suit = Clubs; kind = 7};
-    //                {suit = Spades; kind = 8}; {suit = Diamonds; kind = 13};
-    //                {suit = Clubs; kind = 2}; {suit = Clubs; kind = 1}; {suit = Diamonds; kind = 2}]
-    //    let result = deck |> newGame |> oneGame basicPlayerStrategy
-    //    let expected = {dealerWins = 2; playerWins = 1; draws = 0}
-    //    assert (result = expected)
+    printfn "1000 games of coinFlipPlayerStrategy"
 
     0 // return an integer exit code
 
