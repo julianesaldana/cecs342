@@ -12,10 +12,9 @@ const int pointer_size = sizeof(void*);
 struct Block *free_head;
 
 void my_initialize_heap(int size) {
-    free_head = malloc(size);
+    free_head = malloc(size + 8 + 8);   // size plus header information, which is 8 and 8, taken from lecture
     free_head->block_size = size;
-    struct Block *next_head = NULL;
-    free_head->next_block = next_head;
+    free_head->next_block = NULL;
 }
 
 void* my_alloc(int size) {

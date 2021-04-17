@@ -1,9 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/hw4.dir/main.c.obj"
-  "hw4.exe"
-  "hw4.exe.manifest"
+  "CMakeFiles/hw4.dir/main.c.o"
+  "hw4"
   "hw4.pdb"
-  "libhw4.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.
