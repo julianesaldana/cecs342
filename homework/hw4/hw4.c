@@ -5,14 +5,18 @@ struct Block {
     struct Block *next_block;   // in C, you have to use "stuct Block" as the type;
 };
 
-// void my_initialize_heap(int size) {
-    
-// }
-
 const int overhead_size = sizeof(struct Block);
 const int pointer_size = sizeof(void*);
 struct Block *free_head;
 
+void my_initialize_heap(int size) {
+    free_head = malloc(size);
+    free_head->block_size = 
+}
+
+void* my_alloc(int size) {
+
+}
 
 int main() {
     printf("overhead_size = %d\n", overhead_size);
