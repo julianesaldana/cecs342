@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Julian/Desktop/cecs342/homework/hw4/hw4.c
+stdlib.h
+-
+math.h
+-
+
+C:/Users/Julian/Desktop/cecs342/homework/hw4/main.c
+stdio.h
+-
+stdbool.h
+-
+hw4.c
+C:/Users/Julian/Desktop/cecs342/homework/hw4/hw4.c
+

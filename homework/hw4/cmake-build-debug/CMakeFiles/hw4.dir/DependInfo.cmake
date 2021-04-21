@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/Users/juliansaldana/Desktop/cecs342/homework/hw4/main.c" "/Users/juliansaldana/Desktop/cecs342/homework/hw4/cmake-build-debug/CMakeFiles/hw4.dir/main.c.o"
+  "C:/Users/Julian/Desktop/cecs342/homework/hw4/main.c" "C:/Users/Julian/Desktop/cecs342/homework/hw4/cmake-build-debug/CMakeFiles/hw4.dir/main.c.obj"
   )
-set(CMAKE_C_COMPILER_ID "AppleClang")
+set(CMAKE_C_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
