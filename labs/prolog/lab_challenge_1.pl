@@ -42,6 +42,8 @@ evolves(eevee, vapoeron, item(waterStone)).
 % adding type-effectiveness to move types
 
 immune(electric, ground).
+immune(poison, steel).
+
 
 ineffective(fire, fire).
 ineffective(fire, water).
@@ -52,6 +54,11 @@ ineffective(grass, fire).
 ineffective(electric, grass).
 ineffective(electric, electric).
 ineffective(ground, grass).
+ineffective(poison, poison).
+ineffective(poison, ground).
+ineffective(poison, rock).
+ineffective(poison, ghost).
+
 
 effective(water, fire).
 effective(water, ground).
@@ -61,6 +68,8 @@ effective(electric, water).
 effective(ground, fire).
 effective(ground, electric).
 effective(fire, grass).
+effective(poison, grass).
+effective(poison, fairy).
 
 % adding rules for damage amount done by attack of one type against a target of a given type
 damageMultiplier(MoveType, TargetType, 2.0) :- effective(MoveType, TargetType). % a move does 2x damage against a target if it is effective against that target.
@@ -68,25 +77,7 @@ damageMultiplier(MoveType, TargetType, 0.5) :- ineffective(MoveType, TargetType)
 damageMultiplier(MoveType, TargetType, 0.0) :- immune(MoveType, TargetType).
 damageMultiplier(_, _, 1.0).
 
-% What does pikachu evolve into?
-% evolves(pikachu, X)
-
-% Is Charizard a descendent of Charmander?
-% descendent(charizard, charmander)
-
-% Who is a sibling of Jolteon?
-% sibling(jolteon, Variable)
-
-% What TMs can Pikachu use?
-% canUseItem(pikachu, tm(X))
-
-% damageMultiplier(water, fly, X)
-
-
-% effective(poison, grass).
-% ineffective(poison, poison).
-% ineffective(poison, ground).
-% ineffective(poison, rock).
-% ineffective(poison, ghost).
-% immune(poison, steel).
-% effective(poison, fairy).
+% lab 8
+plusOne(X, Y) :- Y is X + 1.
+add(X, Y, Z) :- Z is X + Y.
+product(X, Y, Z) := Z is X * Y.
