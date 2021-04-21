@@ -83,10 +83,10 @@ damageMultiplier(_, _, 1.0).
 % damageMultiplier(water, fly, X)
 
 
-effective(poison, grass).
-ineffective(poison, poison).
-ineffective(poison, ground).
-ineffective(poison, rock).
-ineffective(poison, ghost).
-immune(poison, steel).
-effective(poison, fairy).
+% effective(poison, grass).
+% ineffective(poison, poison).
+% ineffective(poison, ground).
+% ineffective(poison, rock).
+% ineffective(poison, ghost).
+% immune(poison, steel).
+% effective(poison, fairy).

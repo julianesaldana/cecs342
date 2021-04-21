@@ -46,9 +46,9 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="hw4" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="hw4" TARGET_NAME="hw4" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="hw4" RUN_TARGET_NAME="hw4">
@@ -75,6 +75,7 @@
       <workItem from="1618961509891" duration="9760000" />
       <workItem from="1618972364416" duration="1906000" />
       <workItem from="1618974728234" duration="83000" />
+      <workItem from="1618992121184" duration="623000" />
     </task>
     <servers />
   </component>
