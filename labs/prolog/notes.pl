@@ -1,3 +1,3 @@
 notes :-
-    \+ function(param1, param2),
+    \+ function(param1, param2), % \+ means NOT
     \+ functionother();
