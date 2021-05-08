@@ -1,0 +1,64 @@
+:- use_module(library(clpfd)).
+
+solve(Rows, Cages) :-
+	% append/2 flattens the first argument into the second,
+	% giving a single list of all the squares in the puzzle.
+	append(Rows, Values),
+	Values ins 1..6,
+	% maplist/2 corresponds to "all"; it is true if the given predicate function is true
+	% when applied to all elements of the given list.
+	maplist(all_different, Rows),
+
+	% transpose/2 does a matrix transpose on the puzzle to give a list of
+	% columns instead of rows.
+	transpose(Rows, Cols),
+	maplist(all_different, Cols),
+
+	maplist(label, Rows).
+
+get_cell(S, [I, J], Val) :-
+    nth0(I, S, X),
+    nth0(J, X, V), 
+    Val is V.
+
+cell_values(Cells, S, Values) :-
+    maplist(get_cell(S), Cells, Values).
+
+adds_to(X, Y, Z) :-
+    Z #= X + Y.
+
+mults_to(X, Y, Z) :-
+    Z #= X * Y.
+
+
+
+check_constraint(S, cage(add, Value, Cells)) :-
+    cell_values(Cells, S, Value),
+    foldl(adds_to(), Value).
+
+check_constraint(S, cage(mult, Value, Cells)) :-
+    cell_values(Cells, S, Value),
+    foldl(mults_to(), Value).
+
+% check_constraint(S, cage(sub, Value, Cells)) :-
+%     cell_values(Cells, S, Values).
+
+%check_constraint(S, cage(div, Value, Cells)) :-
+%     cell_values(Cells, S, Values).
+
+% check_constraint(S, cage(id, Value, Cells)) :-
+%    cell_values(Cells, S, Values).
+
+% check_cages(S, Cages) :-
+%     .
+
+sum_list([], 0).
+sum_list([Head | Tail], Sum) :-
+    sum_list(Tail, Result),
+    Sum #= Result + Head.
+
+product_list([], []).
+product_list([Product], Product).
+product_list([Head | Tail], Product) :-
+    product_list(Tail, Result),
+    Product #= Result * Head.
